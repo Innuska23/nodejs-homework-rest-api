@@ -16,6 +16,15 @@ const userSchema = Joi.object({
         }),
 })
 
+const userByFieldSchema = (fieldName) => {
+    const result = userSchema
+        .fork(Object.keys(userSchema.describe().keys), (schema) => schema.optional())
+        .fork(fieldName, (schema) => schema.required().messages({
+            'any.required': `missing required ${fieldName} field`
+        }))
+
+    return result
+}
 
 
-module.exports = { userSchema }
+module.exports = { userSchema, userByFieldSchema }

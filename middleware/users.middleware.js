@@ -3,7 +3,7 @@ const multer = require('multer')
 const path = require('path')
 const jimp = require('jimp')
 
-const { userSchema } = require('../schemas/users.schema')
+const { userSchema, userByFieldSchema } = require('../schemas/users.schema')
 const { getUserById } = require('../service/users.service')
 
 require('dotenv').config()
@@ -16,6 +16,16 @@ const JWT_KEY = process.env.JWT_KEY
 
 const usersValidate = (req, res, next) => {
     const { error } = userSchema.validate(req.body)
+
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message })
+    }
+
+    next()
+}
+
+const usersValidateBodyField = (fieldName) => (req, res, next) => {
+    const { error } = userByFieldSchema(fieldName).validate(req.body)
 
     if (error) {
         return res.status(400).json({ message: error.details[0].message })
@@ -85,6 +95,7 @@ const avatarResize = async (req, res, next) => {
 
 module.exports = {
     usersValidate,
+    usersValidateBodyField,
     isAuthorized,
     avatarUpload,
     avatarResize,

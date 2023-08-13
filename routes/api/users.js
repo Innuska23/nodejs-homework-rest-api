@@ -6,6 +6,7 @@ const {
     isAuthorized,
     avatarUpload,
     avatarResize,
+    usersValidateBodyField
 } = require('../../middleware/users.middleware')
 
 const router = express.Router()
@@ -25,5 +26,10 @@ router.patch(
     avatarResize,
     usersController.updateAvatar
 )
+
+router.get('/verify/:verificationToken', usersController.verify)
+
+router.post('/verify', usersValidateBodyField('email'), usersController.verifyAgain)
+
 
 module.exports = router
