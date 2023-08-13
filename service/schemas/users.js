@@ -17,6 +17,14 @@ const users = new Schema(
             enum: ["starter", "pro", "business"],
             default: "starter"
         },
+        verify: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            required: [true, 'Verification token is required'],
+        },
         token: String,
         avatarURL: String,
     },

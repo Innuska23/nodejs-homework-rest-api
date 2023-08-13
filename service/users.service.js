@@ -11,6 +11,10 @@ const getUserById = async (id) => {
     return Users.findById(id)
 }
 
+const getUserByToken = async (verificationToken) => {
+    return Users.findOne({ verificationToken })
+}
+
 const createUser = async (fields) => {
     return Users.create(fields)
 }
@@ -37,4 +41,5 @@ module.exports = {
     createUser,
     updateUser,
     updateAvatar,
+    getUserByToken
 }
